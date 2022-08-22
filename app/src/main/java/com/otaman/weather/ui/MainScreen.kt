@@ -1,14 +1,12 @@
-package com.otaman.weather
+package com.otaman.weather.ui
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,24 +18,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.otaman.weather.R
+import com.otaman.weather.ui.theme.BlueDark
+import com.otaman.weather.ui.theme.BlueLight
 import com.otaman.weather.ui.theme.WeatherTheme
-
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            WeatherTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    WeatherApp()
-                }
-            }
-        }
-    }
-}
 
 @Composable
 fun AppBar() {
@@ -131,7 +115,7 @@ fun Button() {
 @Composable
 fun WeatherType() {
     Image(
-        painter = painterResource(id = R.drawable.weather_cloudy_4x),
+        painter = painterResource(id = R.drawable.weather_cloudy),
         contentDescription = null
     )
 }
@@ -144,7 +128,8 @@ fun WeatherDetail() {
             .padding(horizontal = 24.dp),
         backgroundColor = Color.White.copy(alpha = 0.4f),
         border = BorderStroke(2.dp, Color.White.copy(alpha = 0.6f)),
-        shape = RoundedCornerShape(30.dp)
+        shape = RoundedCornerShape(30.dp),
+        elevation = 0.dp
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -236,7 +221,7 @@ fun WeatherDetail() {
 }
 
 @Composable
-fun WeatherContent(modifier: Modifier = Modifier) {
+fun WeatherContent() {
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState()),
@@ -250,11 +235,24 @@ fun WeatherContent(modifier: Modifier = Modifier) {
 @Composable
 fun WeatherApp() {
     WeatherTheme {
-        Scaffold(
-            topBar = { AppBar() },
-            bottomBar = { Button() }
-        ) {
-            WeatherContent()
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(brush = Brush.verticalGradient(
+                    listOf(
+                        BlueLight,
+                        BlueDark
+                    )
+                )),
+
+            ) {
+            Scaffold(
+                topBar = { AppBar() },
+                bottomBar = { Button() },
+                backgroundColor = Color.Transparent
+            ) {
+                WeatherContent()
+            }
         }
     }
 }

@@ -55,8 +55,8 @@ val Typography = Typography(
         shadow = Shadow(
             color = Color.Black,
             offset = Offset(-15.0f, 15.0f),
-            blurRadius = 200f
-            )
+            blurRadius = 300f
+        )
     ),
     h3 = TextStyle(
         fontFamily = fontFamilyOverpass,
