@@ -1,4 +1,4 @@
-package com.otaman.weather.ui
+package com.otaman.weather.ui.main_screen
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -24,7 +24,7 @@ import com.otaman.weather.ui.theme.BlueLight
 import com.otaman.weather.ui.theme.WeatherTheme
 
 @Composable
-fun AppBar() {
+private fun AppBar() {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -81,7 +81,7 @@ fun AppBar() {
 }
 
 @Composable
-fun Button() {
+private fun ForecastReportButton() {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -113,7 +113,7 @@ fun Button() {
 }
 
 @Composable
-fun WeatherType() {
+private fun WeatherType() {
     Image(
         painter = painterResource(id = R.drawable.weather_cloudy),
         contentDescription = null
@@ -121,7 +121,7 @@ fun WeatherType() {
 }
 
 @Composable
-fun WeatherDetail() {
+private fun WeatherDetail() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -221,7 +221,7 @@ fun WeatherDetail() {
 }
 
 @Composable
-fun WeatherContent() {
+private fun WeatherContent() {
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState()),
@@ -233,33 +233,34 @@ fun WeatherContent() {
 }
 
 @Composable
-fun WeatherApp() {
-    WeatherTheme {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(brush = Brush.verticalGradient(
+fun MainScreen() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
                     listOf(
                         BlueLight,
                         BlueDark
                     )
-                )),
+                )
+            ),
 
-            ) {
-            Scaffold(
-                topBar = { AppBar() },
-                bottomBar = { Button() },
-                backgroundColor = Color.Transparent
-            ) {
-                WeatherContent()
-            }
+        ) {
+        Scaffold(
+            topBar = { AppBar() },
+            bottomBar = { ForecastReportButton() },
+            backgroundColor = Color.Transparent
+        ) {
+            WeatherContent()
         }
     }
+
 }
 
 @Preview
 @Composable
-fun AppBarPreview() {
+private fun AppBarPreview() {
     WeatherTheme {
         AppBar()
     }
@@ -267,27 +268,29 @@ fun AppBarPreview() {
 
 @Preview
 @Composable
-fun WeatherTypePreview() {
+private fun WeatherTypePreview() {
     WeatherType()
 }
 
 @Preview
 @Composable
-fun WeatherDetailPreview() {
-    WeatherDetail()
-}
-
-@Preview
-@Composable
-fun ButtonPreview() {
+private fun WeatherDetailPreview() {
     WeatherTheme {
-        Button()
+        WeatherDetail()
     }
 }
 
 @Preview
 @Composable
-fun WeatherContentPreview() {
+private fun ButtonPreview() {
+    WeatherTheme {
+        ForecastReportButton()
+    }
+}
+
+@Preview
+@Composable
+private fun WeatherContentPreview() {
     WeatherTheme {
         WeatherContent()
     }
@@ -295,8 +298,8 @@ fun WeatherContentPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun WeatherAppPreview() {
+private fun MainScreenPreview() {
     WeatherTheme {
-        WeatherApp()
+        MainScreen()
     }
 }
