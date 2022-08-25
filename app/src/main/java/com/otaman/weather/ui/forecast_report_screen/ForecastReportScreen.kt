@@ -14,13 +14,18 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.otaman.weather.R
+import com.otaman.weather.ui.Screen
 import com.otaman.weather.ui.theme.BlueDark
 import com.otaman.weather.ui.theme.BlueLight
 import com.otaman.weather.ui.theme.WeatherTheme
 
 @Composable
-private fun AppBar() {
+private fun AppBar(
+    navController: NavController
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -29,9 +34,15 @@ private fun AppBar() {
             .background(color = Color.Transparent)
     ) {
         Button(
-            onClick = { /*TODO*/ },
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
-            elevation = null
+            elevation = null,
+            onClick = {
+                navController.navigate(route = Screen.Main.route) {
+                    popUpTo(Screen.Main.route) {
+                        inclusive = true
+                    }
+                }
+            }
         ) {
             Icon(
                 imageVector = Icons.Filled.KeyboardArrowLeft,
@@ -50,7 +61,9 @@ private fun AppBar() {
 }
 
 @Composable
-fun ForecastReportScreen() {
+fun ForecastReportScreen(
+    navController: NavController
+) {
     WeatherTheme {
         Box(
             modifier = Modifier
@@ -65,7 +78,9 @@ fun ForecastReportScreen() {
                 ),
         ) {
             Scaffold(
-                topBar = { AppBar() },
+                topBar = { AppBar(
+                    navController = navController
+                ) },
                 backgroundColor = Color.Transparent
             ) {
                 Column {
@@ -81,12 +96,16 @@ fun ForecastReportScreen() {
 @Composable
 private fun TopBarPreview() {
     WeatherTheme {
-        AppBar()
+        AppBar(
+            rememberNavController()
+        )
     }
 }
 
 @Preview
 @Composable
 private fun ForecastReportScreenPreview() {
-    ForecastReportScreen()
+    ForecastReportScreen(
+        rememberNavController()
+    )
 }

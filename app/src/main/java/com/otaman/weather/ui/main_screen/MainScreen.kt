@@ -18,7 +18,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.otaman.weather.R
+import com.otaman.weather.ui.Screen
 import com.otaman.weather.ui.theme.BlueDark
 import com.otaman.weather.ui.theme.BlueLight
 import com.otaman.weather.ui.theme.WeatherTheme
@@ -81,14 +84,22 @@ private fun AppBar() {
 }
 
 @Composable
-private fun ForecastReportButton() {
+private fun ForecastReportButton(
+    navController: NavController
+) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         OutlinedButton(
             shape = RoundedCornerShape(16.dp),
-            onClick = { /*TODO*/ },
+            onClick = {
+                navController.navigate(route = Screen.ForecastReport.route) {
+                    popUpTo(Screen.ForecastReport.route) {
+                        inclusive = true
+                    }
+                }
+            },
             modifier = Modifier
                 .width(200.dp)
                 .height(90.dp)
@@ -233,7 +244,9 @@ private fun WeatherContent() {
 }
 
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    navController: NavController
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -249,8 +262,10 @@ fun MainScreen() {
         ) {
         Scaffold(
             topBar = { AppBar() },
-            bottomBar = { ForecastReportButton() },
-            backgroundColor = Color.Transparent
+            backgroundColor = Color.Transparent,
+            bottomBar = { ForecastReportButton(
+                navController = navController
+            ) }
         ) {
             WeatherContent()
         }
@@ -284,7 +299,9 @@ private fun WeatherDetailPreview() {
 @Composable
 private fun ButtonPreview() {
     WeatherTheme {
-        ForecastReportButton()
+        ForecastReportButton(
+            navController = rememberNavController()
+        )
     }
 }
 
@@ -300,6 +317,8 @@ private fun WeatherContentPreview() {
 @Composable
 private fun MainScreenPreview() {
     WeatherTheme {
-        MainScreen()
+        MainScreen(
+            navController = rememberNavController()
+        )
     }
 }
