@@ -14,17 +14,14 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.otaman.weather.R
-import com.otaman.weather.ui.Screen
 import com.otaman.weather.ui.theme.BlueDark
 import com.otaman.weather.ui.theme.BlueLight
 import com.otaman.weather.ui.theme.WeatherTheme
 
 @Composable
 private fun AppBar(
-    navController: NavController
+    onBackClick: () -> Unit
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -36,13 +33,7 @@ private fun AppBar(
         Button(
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
             elevation = null,
-            onClick = {
-                navController.navigate(route = Screen.Main.route) {
-                    popUpTo(Screen.Main.route) {
-                        inclusive = true
-                    }
-                }
-            }
+            onClick = onBackClick
         ) {
             Icon(
                 imageVector = Icons.Filled.KeyboardArrowLeft,
@@ -62,7 +53,7 @@ private fun AppBar(
 
 @Composable
 fun ForecastReportScreen(
-    navController: NavController
+    onBackClick: () -> Unit
 ) {
     WeatherTheme {
         Box(
@@ -79,7 +70,7 @@ fun ForecastReportScreen(
         ) {
             Scaffold(
                 topBar = { AppBar(
-                    navController = navController
+                    onBackClick = onBackClick
                 ) },
                 backgroundColor = Color.Transparent
             ) {
@@ -96,16 +87,12 @@ fun ForecastReportScreen(
 @Composable
 private fun TopBarPreview() {
     WeatherTheme {
-        AppBar(
-            rememberNavController()
-        )
+        AppBar(onBackClick = {})
     }
 }
 
 @Preview
 @Composable
 private fun ForecastReportScreenPreview() {
-    ForecastReportScreen(
-        rememberNavController()
-    )
+    ForecastReportScreen(onBackClick = {})
 }
