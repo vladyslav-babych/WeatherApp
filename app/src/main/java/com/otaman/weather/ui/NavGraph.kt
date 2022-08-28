@@ -20,7 +20,7 @@ fun SetupNavGraph(
             route = Screen.Main.route
         ) {
             MainScreen(onForecastReportButtonClick = {
-                navController.navigateSingleTopTo(Screen.ForecastReport.route)
+                navController.navigate(Screen.ForecastReport.route)
             })
         }
         composable(
@@ -32,6 +32,3 @@ fun SetupNavGraph(
         }
     }
 }
-
-fun NavHostController.navigateSingleTopTo(route: String) =
-    this.navigate(route)
