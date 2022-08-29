@@ -81,14 +81,16 @@ private fun AppBar() {
 }
 
 @Composable
-private fun ForecastReportButton() {
+private fun ForecastReportButton(
+    onForecastReportButtonClick: () -> Unit
+) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         OutlinedButton(
             shape = RoundedCornerShape(16.dp),
-            onClick = { /*TODO*/ },
+            onClick = onForecastReportButtonClick,
             modifier = Modifier
                 .width(200.dp)
                 .height(90.dp)
@@ -233,7 +235,9 @@ private fun WeatherContent() {
 }
 
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    onForecastReportButtonClick: () -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -249,8 +253,10 @@ fun MainScreen() {
         ) {
         Scaffold(
             topBar = { AppBar() },
-            bottomBar = { ForecastReportButton() },
-            backgroundColor = Color.Transparent
+            backgroundColor = Color.Transparent,
+            bottomBar = { ForecastReportButton(
+                onForecastReportButtonClick = onForecastReportButtonClick
+            ) }
         ) {
             WeatherContent()
         }
@@ -283,9 +289,7 @@ private fun WeatherDetailPreview() {
 @Preview
 @Composable
 private fun ButtonPreview() {
-    WeatherTheme {
-        ForecastReportButton()
-    }
+    WeatherTheme {}
 }
 
 @Preview
@@ -300,6 +304,6 @@ private fun WeatherContentPreview() {
 @Composable
 private fun MainScreenPreview() {
     WeatherTheme {
-        MainScreen()
+        MainScreen(onForecastReportButtonClick = {})
     }
 }

@@ -60,16 +60,11 @@ private fun TodayForecastListItem() {
             style = MaterialTheme.typography.h1,
             fontSize = 16.sp
         )
-        Box(
-            modifier = Modifier
-                .size(64.dp)
-                .padding(top = 12.dp)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.weather_cloudy),
-                contentDescription = null
-            )
-        }
+        Image(
+            painter = painterResource(id = R.drawable.weather_cloudy),
+            contentDescription = null,
+            modifier = Modifier.size(64.dp)
+        )
         Text(
             text = "17.00",
             style = MaterialTheme.typography.h1,

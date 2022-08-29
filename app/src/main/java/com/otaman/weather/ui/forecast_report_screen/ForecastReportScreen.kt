@@ -20,7 +20,9 @@ import com.otaman.weather.ui.theme.BlueLight
 import com.otaman.weather.ui.theme.WeatherTheme
 
 @Composable
-private fun AppBar() {
+private fun AppBar(
+    onBackClick: () -> Unit
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -29,9 +31,9 @@ private fun AppBar() {
             .background(color = Color.Transparent)
     ) {
         Button(
-            onClick = { /*TODO*/ },
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
-            elevation = null
+            elevation = null,
+            onClick = onBackClick
         ) {
             Icon(
                 imageVector = Icons.Filled.KeyboardArrowLeft,
@@ -50,7 +52,9 @@ private fun AppBar() {
 }
 
 @Composable
-fun ForecastReportScreen() {
+fun ForecastReportScreen(
+    onBackClick: () -> Unit
+) {
     WeatherTheme {
         Box(
             modifier = Modifier
@@ -65,7 +69,9 @@ fun ForecastReportScreen() {
                 ),
         ) {
             Scaffold(
-                topBar = { AppBar() },
+                topBar = { AppBar(
+                    onBackClick = onBackClick
+                ) },
                 backgroundColor = Color.Transparent
             ) {
                 Column {
@@ -81,12 +87,12 @@ fun ForecastReportScreen() {
 @Composable
 private fun TopBarPreview() {
     WeatherTheme {
-        AppBar()
+        AppBar(onBackClick = {})
     }
 }
 
 @Preview
 @Composable
 private fun ForecastReportScreenPreview() {
-    ForecastReportScreen()
+    ForecastReportScreen(onBackClick = {})
 }
