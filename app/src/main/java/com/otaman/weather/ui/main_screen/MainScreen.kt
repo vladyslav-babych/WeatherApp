@@ -289,7 +289,9 @@ private fun WeatherDetailPreview() {
 @Preview
 @Composable
 private fun ButtonPreview() {
-    WeatherTheme {}
+    WeatherTheme {
+        ForecastReportButton(onForecastReportButtonClick = {})
+    }
 }
 
 @Preview

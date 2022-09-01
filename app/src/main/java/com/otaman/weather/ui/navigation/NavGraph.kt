@@ -1,7 +1,6 @@
-package com.otaman.weather.ui
+package com.otaman.weather.ui.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
