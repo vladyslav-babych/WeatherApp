@@ -8,6 +8,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -15,13 +17,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color.Companion.Red
+import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.rememberAsyncImagePainter
 import com.otaman.weather.R
+import com.otaman.weather.domain.weather.CurrentWeather
+import com.otaman.weather.ui.WeatherState
 import com.otaman.weather.ui.theme.BlueDark
 import com.otaman.weather.ui.theme.BlueLight
-import com.otaman.weather.ui.theme.WeatherTheme
+import com.otaman.weather.ui.viewmodel.MainScreenViewModel
 
 @Composable
 private fun AppBar() {
@@ -115,15 +123,21 @@ private fun ForecastReportButton(
 }
 
 @Composable
-private fun WeatherType() {
+private fun WeatherConditionIcon(
+    icon: String
+) {
     Image(
-        painter = painterResource(id = R.drawable.weather_cloudy),
-        contentDescription = null
+        painter = rememberAsyncImagePainter(icon),
+        contentDescription = null,
+        modifier = Modifier.size(200.dp)
     )
 }
 
 @Composable
-private fun WeatherDetail() {
+private fun WeatherDetail(
+    weatherState: CurrentWeather
+) {
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -138,22 +152,24 @@ private fun WeatherDetail() {
             modifier = Modifier
                 .padding(vertical = 24.dp)
                 .background(color = Color.Transparent)
-        ) {
+            ) {
             Text(
-                text = "Today, 12 September",
+                text = "Today, 7 September",
                 style = MaterialTheme.typography.h1,
                 fontSize = 20.sp
             )
             Text(
-                text = " 29°",
+                text = " ${weatherState.temp}°",
                 fontSize = 96.sp,
                 style = MaterialTheme.typography.h2
             )
             Text(
-                text = "Cloudy",
+                text = weatherState.conditionText,
                 style = MaterialTheme.typography.h3
             )
+
             Spacer(modifier = Modifier.padding(12.dp))
+
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -164,10 +180,9 @@ private fun WeatherDetail() {
                 Text(
                     text = "Wind",
                     style = MaterialTheme.typography.h1,
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.End,
                     fontSize = 18.sp,
-                    modifier = Modifier
-                        .width(80.dp)
+                    modifier = Modifier.width(70.dp)
                 )
                 Text(
                     text = "|",
@@ -177,13 +192,11 @@ private fun WeatherDetail() {
                     modifier = Modifier.width(40.dp)
                 )
                 Text(
-                    text = "10 km/h",
+                    text = "${weatherState.wind} km/h",
                     style = MaterialTheme.typography.h1,
                     textAlign = TextAlign.Start,
                     fontSize = 18.sp,
-                    modifier = Modifier
-                        .width(90.dp)
-                        .padding(start = 20.dp)
+                    modifier = Modifier.width(90.dp)
                 )
             }
             Spacer(modifier = Modifier.padding(6.dp))
@@ -197,9 +210,9 @@ private fun WeatherDetail() {
                 Text(
                     text = "Hum",
                     style = MaterialTheme.typography.h1,
-                    textAlign = TextAlign.Center,
+                    textAlign = TextAlign.End,
                     fontSize = 18.sp,
-                    modifier = Modifier.width(80.dp)
+                    modifier = Modifier.width(70.dp)
                 )
                 Text(
                     text = "|",
@@ -209,13 +222,11 @@ private fun WeatherDetail() {
                     modifier = Modifier.width(40.dp)
                 )
                 Text(
-                    text = "54 %",
+                    text = "${weatherState.humidity} %",
                     style = MaterialTheme.typography.h1,
                     textAlign = TextAlign.Start,
                     fontSize = 18.sp,
-                    modifier = Modifier
-                        .width(90.dp)
-                        .padding(start = 20.dp)
+                    modifier = Modifier.width(90.dp)
                 )
             }
         }
@@ -223,89 +234,93 @@ private fun WeatherDetail() {
 }
 
 @Composable
-private fun WeatherContent() {
-    Column(
-        modifier = Modifier
-            .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        WeatherType()
-        WeatherDetail()
-    }
-}
-
-@Composable
 fun MainScreen(
-    onForecastReportButtonClick: () -> Unit
+    onForecastReportButtonClick: () -> Unit,
+    viewModel: MainScreenViewModel = viewModel()
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    listOf(
-                        BlueLight,
-                        BlueDark
+    val weatherState by remember {
+        viewModel.state
+    }
+    when(val state = weatherState) {
+        is WeatherState.CurrentWeatherData -> {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        brush = Brush.verticalGradient(
+                            listOf(
+                                BlueLight,
+                                BlueDark
+                            )
+                        )
                     )
-                )
-            ),
-
-        ) {
-        Scaffold(
-            topBar = { AppBar() },
-            backgroundColor = Color.Transparent,
-            bottomBar = { ForecastReportButton(
-                onForecastReportButtonClick = onForecastReportButtonClick
-            ) }
-        ) {
-            WeatherContent()
+                ) {
+                Scaffold(
+                    topBar = { AppBar() },
+                    backgroundColor = Color.Transparent,
+                    bottomBar = { ForecastReportButton(
+                        onForecastReportButtonClick = onForecastReportButtonClick
+                    ) }
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .verticalScroll(rememberScrollState()),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        WeatherConditionIcon(state.currentWeatherData.conditionIcon)
+                        WeatherDetail(state.currentWeatherData)
+                    }
+                }
+            }
         }
-    }
-
-}
-
-@Preview
-@Composable
-private fun AppBarPreview() {
-    WeatherTheme {
-        AppBar()
-    }
-}
-
-@Preview
-@Composable
-private fun WeatherTypePreview() {
-    WeatherType()
-}
-
-@Preview
-@Composable
-private fun WeatherDetailPreview() {
-    WeatherTheme {
-        WeatherDetail()
-    }
-}
-
-@Preview
-@Composable
-private fun ButtonPreview() {
-    WeatherTheme {
-        ForecastReportButton(onForecastReportButtonClick = {})
-    }
-}
-
-@Preview
-@Composable
-private fun WeatherContentPreview() {
-    WeatherTheme {
-        WeatherContent()
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun MainScreenPreview() {
-    WeatherTheme {
-        MainScreen(onForecastReportButtonClick = {})
+        is WeatherState.Loading -> {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        brush = Brush.verticalGradient(
+                            listOf(
+                                BlueLight,
+                                BlueDark
+                            )
+                        )
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+        is WeatherState.Error -> {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        brush = Brush.verticalGradient(
+                            listOf(
+                                BlueLight,
+                                BlueDark
+                            )
+                        )
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = state.error,
+                        style = MaterialTheme.typography.h1,
+                        color = Red,
+                        textAlign = TextAlign.Center
+                    )
+                    Text(
+                        text = "Click here to retry",
+                        style = MaterialTheme.typography.h1,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.clickable { viewModel.retry() }
+                    )
+                }
+            }
+        }
     }
 }

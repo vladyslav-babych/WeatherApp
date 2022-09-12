@@ -1,6 +1,6 @@
 package com.otaman.weather.di
 
-import com.otaman.weather.networking.WeatherRepository
+import com.otaman.weather.domain.repository.WeatherRepository
 import com.otaman.weather.networking.WeatherRepositoryImpl
 import com.otaman.weather.networking.WeatherService
 import com.squareup.moshi.Moshi
