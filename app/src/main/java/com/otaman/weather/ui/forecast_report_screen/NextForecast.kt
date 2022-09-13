@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -29,7 +30,7 @@ private fun NextForecastTitle() {
             .padding(bottom = 24.dp)
     ) {
         Text(
-            text = "Next Forecast",
+            text = stringResource(id = R.string.next_forecast),
             style = MaterialTheme.typography.h3
         )
     }
@@ -56,7 +57,7 @@ private fun NextForecastListItem(forecastData: ForecastWeather) {
         )
 
         Text(
-            text = "${forecastData.dayTemp}°C",
+            text = stringResource(id = R.string.daily_temp, forecastData.dayTemp),
             style = MaterialTheme.typography.h1,
             fontSize = 16.sp
         )

@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color.Companion.Red
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.otaman.weather.R
@@ -52,7 +53,7 @@ private fun AppBar() {
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent)
         ) {
             Text(
-                text = "Semarang",
+                text = stringResource(id = R.string.city),
                 style = MaterialTheme.typography.body2,
                 fontSize = 24.sp
             )
@@ -105,7 +106,7 @@ private fun ForecastReportButton(
                 .padding(bottom = 36.dp)
         ) {
             Text(
-                text = "Forecast report",
+                text = stringResource(id = R.string.forecast_report),
                 style = MaterialTheme.typography.body1,
                 color = Color.Black,
                 fontSize = 18.sp
@@ -157,12 +158,12 @@ private fun WeatherDetail(
                 .background(color = Color.Transparent)
             ) {
             Text(
-                text = "Today, $date",
+                text = stringResource(id = R.string.date_today_card, date),
                 style = MaterialTheme.typography.h1,
                 fontSize = 20.sp
             )
             Text(
-                text = " ${weatherState.temp}°",
+                text = stringResource(id = R.string.current_temp, weatherState.temp),
                 fontSize = 96.sp,
                 style = MaterialTheme.typography.h2
             )
@@ -181,7 +182,7 @@ private fun WeatherDetail(
                     contentDescription = null
                 )
                 Text(
-                    text = "Wind",
+                    text = stringResource(id = R.string.wind),
                     style = MaterialTheme.typography.h1,
                     textAlign = TextAlign.End,
                     fontSize = 18.sp,
@@ -195,7 +196,7 @@ private fun WeatherDetail(
                     modifier = Modifier.width(40.dp)
                 )
                 Text(
-                    text = "${weatherState.wind} km/h",
+                    text = stringResource(id = R.string.wind_speed, weatherState.wind),
                     style = MaterialTheme.typography.h1,
                     textAlign = TextAlign.Start,
                     fontSize = 18.sp,
@@ -211,7 +212,7 @@ private fun WeatherDetail(
                     contentDescription = null
                 )
                 Text(
-                    text = "Hum",
+                    text = stringResource(id = R.string.hum),
                     style = MaterialTheme.typography.h1,
                     textAlign = TextAlign.End,
                     fontSize = 18.sp,
@@ -225,7 +226,7 @@ private fun WeatherDetail(
                     modifier = Modifier.width(40.dp)
                 )
                 Text(
-                    text = "${weatherState.humidity} %",
+                    text = stringResource(id = R.string.humidity, weatherState.humidity, "%"),
                     style = MaterialTheme.typography.h1,
                     textAlign = TextAlign.Start,
                     fontSize = 18.sp,
@@ -317,7 +318,7 @@ fun MainScreen(
                         textAlign = TextAlign.Center
                     )
                     Text(
-                        text = "Click here to retry",
+                        text = stringResource(id = R.string.retry),
                         style = MaterialTheme.typography.h1,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.clickable { viewModel.retry() }

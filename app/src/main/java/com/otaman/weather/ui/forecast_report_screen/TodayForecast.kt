@@ -11,10 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.otaman.weather.domain.weather.HourlyWeather
+import com.otaman.weather.R
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -31,7 +33,7 @@ private fun TodayForecastDate() {
             .padding(bottom = 24.dp)
     ) {
         Text(
-            text = "Today",
+            text = stringResource(id = R.string.today),
             style = MaterialTheme.typography.h3
         )
 
@@ -59,7 +61,7 @@ private fun TodayForecastListItem(
             .background(color = Color.Transparent)
     ) {
         Text(
-            text = "${todayForecastData.hourlyTemp}°C",
+            text = stringResource(id = R.string.hourly_temp, todayForecastData.hourlyTemp),
             style = MaterialTheme.typography.h1,
             fontSize = 16.sp
         )

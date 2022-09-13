@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Weather</string>
+
+    <string name="retry">Click here to retry</string>
+    <string name="humidity">%1$d %2$s</string>
+    <string name="hum">Hum</string>
+    <string name="wind_speed">%1$.1f km/h</string>
+    <string name="wind">Wind</string>
+    <string name="current_temp">%1$.1f°</string>
+    <string name="date_today_card">Today, %1$s</string>
+    <string name="forecast_report">Forecast report</string>
+    <string name="city">Lviv</string>
+    <string name="today">Today</string>
+    <string name="hourly_temp">%1$.1f°C</string>
+    <string name="daily_temp">%1$.1f°C</string>
+    <string name="next_forecast">Next Forecast</string>
+    <string name="back">Back</string>
 </resources>
