@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.otaman.weather.ui.forecast_report_screen.ForecastReportScreen
 import com.otaman.weather.ui.main_screen.MainScreen
+import com.otaman.weather.ui.viewmodel.ForecastScreenViewModel
 import com.otaman.weather.ui.viewmodel.MainScreenViewModel
 
 @Composable
@@ -33,9 +34,13 @@ fun SetupNavGraph(
         composable(
             route = Screen.ForecastReport.route
         ) {
-            ForecastReportScreen(onBackClick = {
-                navController.popBackStack()
-            })
+            val forecastScreenViewModel = hiltViewModel<ForecastScreenViewModel>()
+            ForecastReportScreen(
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                viewModel = forecastScreenViewModel
+            )
         }
     }
 }

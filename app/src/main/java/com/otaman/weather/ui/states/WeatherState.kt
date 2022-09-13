@@ -1,4 +1,4 @@
-package com.otaman.weather.ui
+package com.otaman.weather.ui.states
 
 import com.otaman.weather.domain.weather.CurrentWeather
 

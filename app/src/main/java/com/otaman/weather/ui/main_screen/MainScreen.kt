@@ -8,7 +8,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,15 +20,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color.Companion.Red
-import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.otaman.weather.R
 import com.otaman.weather.domain.weather.CurrentWeather
-import com.otaman.weather.ui.WeatherState
+import com.otaman.weather.ui.states.WeatherState
 import com.otaman.weather.ui.theme.BlueDark
 import com.otaman.weather.ui.theme.BlueLight
 import com.otaman.weather.ui.viewmodel.MainScreenViewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Composable
 private fun AppBar() {
@@ -137,6 +137,9 @@ private fun WeatherConditionIcon(
 private fun WeatherDetail(
     weatherState: CurrentWeather
 ) {
+    val dateInstance = Calendar.getInstance().time
+    val formatter = SimpleDateFormat("dd MMM")
+    val date = formatter.format(dateInstance)
 
     Card(
         modifier = Modifier
@@ -154,7 +157,7 @@ private fun WeatherDetail(
                 .background(color = Color.Transparent)
             ) {
             Text(
-                text = "Today, 7 September",
+                text = "Today, $date",
                 style = MaterialTheme.typography.h1,
                 fontSize = 20.sp
             )

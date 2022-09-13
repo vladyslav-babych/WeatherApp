@@ -5,39 +5,39 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.otaman.weather.domain.util.Resource
-import com.otaman.weather.ui.states.WeatherState
 import com.otaman.weather.domain.repository.WeatherRepository
+import com.otaman.weather.domain.util.Resource
+import com.otaman.weather.ui.states.ForecastState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainScreenViewModel @Inject constructor(
+class ForecastScreenViewModel @Inject constructor(
     private val repository: WeatherRepository
 ): ViewModel() {
 
-    private val _state: MutableState<WeatherState> = mutableStateOf(WeatherState.Loading)
-    val state: State<WeatherState> = _state
+    private val _state: MutableState<ForecastState> = mutableStateOf(ForecastState.Loading)
+    val state: State<ForecastState> = _state
 
     init {
-        getCurrentWeather("Lviv")
+        getForecast("Lviv", 7)
     }
 
     fun retry() {
-        getCurrentWeather("Lviv")
+        getForecast("Lviv", 7)
     }
 
-    private fun getCurrentWeather(query: String) = viewModelScope.launch {
-        when(val result = repository.getCurrentWeather(query)) {
+    private fun getForecast(query: String, daysAmount: Int) = viewModelScope.launch {
+        when(val result = repository.getForecast(query, daysAmount)) {
             is Resource.Success -> {
                 _state.value = result.data.let { data ->
-                    WeatherState.CurrentWeatherData(currentWeatherData = data)
+                    ForecastState.ForecastData(forecastData = data)
                 }
             }
             is Resource.Error -> {
                 _state.value = result.message.let { message ->
-                    WeatherState.Error(error = message)
+                    ForecastState.Error(error = message)
                 }
             }
         }
