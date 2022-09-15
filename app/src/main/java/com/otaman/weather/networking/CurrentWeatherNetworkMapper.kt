@@ -27,16 +27,16 @@ fun CurrentWeatherResponse.toCurrentWeather(): CurrentWeather {
     )
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun ForecastResponse.toForecast(): List<ForecastWeather> {
     return forecast.forecastDay.map { item ->
-        val localDate = LocalDate.parse(item.date)
-        val month = localDate.month.toString()
-        val day = localDate.dayOfMonth.toString()
+        val apiFormat = SimpleDateFormat("yyyy-MM-dd")
+        val date = apiFormat.parse(item.date)
+        val forecastFormat = SimpleDateFormat("dd MMM")
+        val formattedDate = forecastFormat.format(date)
 
         ForecastWeather(
             dayTemp = item.day.dayTemp,
-            date = "$day $month",
+            date = formattedDate,
             dayConditionIcon = "https:${item.day.dayCondition.dayConditionIcon}",
             hourly = item.hour.map { hour ->
                 hour.toHourly()
@@ -46,9 +46,14 @@ fun ForecastResponse.toForecast(): List<ForecastWeather> {
 }
 
 fun Hour.toHourly(): HourlyWeather {
+    val apiFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
+    val time = apiFormat.parse(time)
+    val forecastFormat = SimpleDateFormat("HH:mm")
+    val formattedTime = forecastFormat.format(time)
+
     return HourlyWeather(
         hourlyTemp = temp,
         hourlyConditionIcon = "https:${condition.conditionIcon}",
-        time = time.drop(11)
+        time = formattedTime
     )
 }
