@@ -21,11 +21,11 @@ class ForecastScreenViewModel @Inject constructor(
     val state: State<ForecastState> = _state
 
     init {
-        getForecast("Lviv", 7)
+        getForecast("Lviv", 3)
     }
 
     fun retry() {
-        getForecast("Lviv", 7)
+        getForecast("Lviv", 3)
     }
 
     private fun getForecast(query: String, daysAmount: Int) = viewModelScope.launch {
