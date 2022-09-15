@@ -82,4 +82,13 @@ dependencies {
 
     // Coil
     implementation("io.coil-kt:coil-compose:2.1.0")
+
+    // Mockito
+    testImplementation "io.mockk:mockk:1.9.3"
+
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.3"
+    testImplementation 'org.hamcrest:hamcrest:2.2'
+
+
+    implementation "androidx.arch.core:core-testing:2.1.0"
 }
