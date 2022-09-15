@@ -1,28 +1,31 @@
 package com.otaman.weather.ui.forecast_report_screen
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
+import com.otaman.weather.domain.weather.HourlyWeather
 import com.otaman.weather.R
-import com.otaman.weather.ui.theme.WeatherTheme
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Composable
 private fun TodayForecastDate() {
+    val dateInstance = Calendar.getInstance().time
+    val formatter = SimpleDateFormat("MMM, dd")
+    val date = formatter.format(dateInstance)
+
     Row(
         verticalAlignment = Alignment.Bottom,
         modifier = Modifier
@@ -30,7 +33,7 @@ private fun TodayForecastDate() {
             .padding(bottom = 24.dp)
     ) {
         Text(
-            text = "Today",
+            text = stringResource(id = R.string.today),
             style = MaterialTheme.typography.h3
         )
 
@@ -40,7 +43,7 @@ private fun TodayForecastDate() {
                 .fillMaxWidth())
 
         Text(
-            text = "Sep, 12",
+            text = date,
             style = MaterialTheme.typography.h1,
             fontSize = 16.sp
         )
@@ -48,7 +51,9 @@ private fun TodayForecastDate() {
 }
 
 @Composable
-private fun TodayForecastListItem() {
+private fun TodayForecastListItem(
+    todayForecastData: HourlyWeather
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -56,17 +61,17 @@ private fun TodayForecastListItem() {
             .background(color = Color.Transparent)
     ) {
         Text(
-            text = "24°C",
+            text = stringResource(id = R.string.hourly_temp, todayForecastData.hourlyTemp),
             style = MaterialTheme.typography.h1,
             fontSize = 16.sp
         )
         Image(
-            painter = painterResource(id = R.drawable.weather_cloudy),
+            painter = rememberAsyncImagePainter(model = todayForecastData.hourlyConditionIcon),
             contentDescription = null,
-            modifier = Modifier.size(64.dp)
+            modifier = Modifier.size(56.dp)
         )
         Text(
-            text = "17.00",
+            text = todayForecastData.time,
             style = MaterialTheme.typography.h1,
             fontSize = 16.sp
         )
@@ -74,78 +79,28 @@ private fun TodayForecastListItem() {
 }
 
 @Composable
-private fun TodayForecastListItemCard() {
-    Card(
-        modifier = Modifier
-            .padding(horizontal = 12.dp),
-        backgroundColor = Color.White.copy(alpha = 0.4f),
-        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.6f)),
-        shape = RoundedCornerShape(24.dp),
-        elevation = 0.dp
-    ) {
-        TodayForecastListItem()
-    }
-}
-
-@Composable
-private fun TodayForecastRow() {
+private fun TodayForecastRow(
+    todayForecast: List<HourlyWeather>
+) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(todayForecastList) {
-            TodayForecastListItem()
+        items(todayForecast) { todayForecastData ->
+            TodayForecastListItem(
+                todayForecastData = todayForecastData
+            )
         }
     }
 }
 
 @Composable
-fun TodayForecast() {
+fun TodayForecast(
+    todayForecast: List<HourlyWeather>
+) {
     Column(
         modifier = Modifier.padding(24.dp)
     ) {
         TodayForecastDate()
-        TodayForecastRow()
-    }
-}
-
-private val todayForecastList = List(24) {}
-
-@Preview
-@Composable
-private fun TodayForecastDatePreview() {
-    WeatherTheme {
-        TodayForecastDate()
-    }
-}
-
-@Preview
-@Composable
-private fun TodayForecastListItemPreview() {
-    WeatherTheme {
-        TodayForecastListItem()
-    }
-}
-
-@Preview
-@Composable
-private fun TodayForecastListItemCardPreview() {
-    WeatherTheme {
-        TodayForecastListItemCard()
-    }
-}
-
-@Preview
-@Composable
-private fun TodayForecastRowPreview() {
-    WeatherTheme {
-        TodayForecastRow()
-    }
-}
-
-@Preview
-@Composable
-private fun TodayForecastPreview() {
-    WeatherTheme {
-        TodayForecast()
+        TodayForecastRow(todayForecast)
     }
 }
